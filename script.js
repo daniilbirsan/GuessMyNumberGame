@@ -33,32 +33,26 @@ class Game {
     #randomNumber(firstNumber, lastNumber) {
         this.#secretNumber = Math.floor(Math.random() * lastNumber) + firstNumber;
     }
-
     startTheGameSetUp() {
-        DOM.hideClass('success')
-        DOM.hideClass('error')
-        DOM.hideClass('errorInformation')
+        ['success', 'error', 'errorInformation'].forEach(item => DOM.hideClass(item))
         this.#attempts = 5
         this.#randomNumber(1, 19)
         document.getElementById("guessedNumber").value = "";
         DOM.changeDomByClass('attemptsCount', this.#attempts)
+        DOM.disableButtonOnCondition()
     }
-
     start() {
         DOM.switchClasses('centerButton', 'game')
         this.startTheGameSetUp()
     }
-
     #userSuccess() {
         DOM.switchClasses('game', 'success')
         DOM.changeDomByClass('secretNumberSuccess', this.#secretNumber)
     }
-
     #userError() {
         DOM.switchClasses('game', 'error')
         DOM.changeDomByClass('secretNumberError', this.#secretNumber)
     }
-
     #userWrongAttempt(guessedNumber) {
         this.#attempts--
         DOM.showClass('errorInformation')
@@ -71,14 +65,12 @@ class Game {
             DOM.changeDomByClass('numberStatus', 'less')
         }
     }
-
     guess() {
         let guessedNumber = Number(DOM.getValueFromInputById('guessedNumber'))
         if (guessedNumber > 0 && guessedNumber < 20) {
             this.#guessPrivate(guessedNumber)
         }
     }
-
     #guessPrivate(guessedNumber) {
         if (guessedNumber === this.#secretNumber) {
             this.#userSuccess()
@@ -91,7 +83,6 @@ class Game {
         }
     }
 }
-
 DOM.hideClass('game')
 
 const game = new Game()
