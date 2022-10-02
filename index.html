@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Guess my number Game</title>
+</head>
+<body>
+    <main class="center center-block">
+        <div class="centerButton">
+            <button class="playButton center-block" onclick="game.start()">PLAY</button>
+        </div>
+
+        <section class="game">
+            <h4 class="attempts">Attempts remaining: <span class="attemptsCount"></span></h4>
+            <div class="game-content">
+                <h3 class="text-center">Choose a number between 0 and 20</h3>
+                <div class="input-center">
+                    <input type="number" onkeyup="DOM.disableButtonOnCondition()" placeholder="Enter your number here..." id="guessedNumber">
+                </div>
+                <div class="centerButton">
+                    <button class="guessButton" disabled onclick="game.guess()">Guess</button>
+                </div>
+                <p class="errorInformation text-center">The number is <span class="numberStatus"></span> than <span class="secretNumber"></span>, you have <span class="attemptsLeft"></span> more attempt/s</p>
+            </div>
+        </section>
+
+        <section class="success response">
+            <h1 class="text-center">You won, the number was <span class="secretNumberSuccess"></span></h1>
+            <div class="centerButton">
+                <button class="buttonReset" onclick="game.start()">Reset</button>
+            </div>
+        </section>
+
+        <section class="error response">
+            <h1 class="text-center">You lost. The number was <span class="secretNumberError"></span></h1>
+            <div class="centerButton">
+                <button class="buttonReset" onclick="game.start()">Reset</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
