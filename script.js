@@ -14,11 +14,7 @@ class DOM {
     static disableButtonOnCondition() {
         const inputValue = document.getElementById('guessedNumber').value
         const button = document.querySelector('.guessButton')
-        if (inputValue > 0 && inputValue < 20) {
-            button.disabled = false;
-        } else {
-            button.disabled = true;
-        }
+        inputValue > 0 && inputValue < 20 ? button.disabled = false : button.disabled = true
     }
     static switchClasses(hideClass, showClass) {
         this.hideClass(hideClass)
@@ -27,8 +23,9 @@ class DOM {
 }
 
 class Game {
-    #attempts = undefined
-    #secretNumber = undefined
+    #attempts = 5
+    #secretNumber = 0
+    #wrongAttempts = []
 
     #randomNumber(firstNumber, lastNumber) {
         this.#secretNumber = Math.floor(Math.random() * lastNumber) + firstNumber;
@@ -36,8 +33,10 @@ class Game {
     startTheGameSetUp() {
         ['success', 'error', 'errorInformation'].forEach(item => DOM.hideClass(item))
         this.#attempts = 5
+        this.#wrongAttempts = []
         this.#randomNumber(1, 19)
         document.getElementById("guessedNumber").value = "";
+        DOM.hideClass('triedNumbers')
         DOM.changeDomByClass('attemptsCount', this.#attempts)
         DOM.disableButtonOnCondition()
     }
@@ -53,23 +52,31 @@ class Game {
         DOM.switchClasses('game', 'error')
         DOM.changeDomByClass('secretNumberError', this.#secretNumber)
     }
-    #userWrongAttempt(guessedNumber) {
-        this.#attempts--
+    #removeInputValue() {
+        document.getElementById('guessedNumber').value = ''
+        DOM.disableButtonOnCondition()
+    }
+    #rememberWrongAttempts(guessedNumber) {
+        DOM.showClass('triedNumbers')
+        this.#wrongAttempts.push(guessedNumber)
+        DOM.changeDomByClass('attemptsRemember', this.#wrongAttempts)
+    }
+    #mutateDomWrongAttempt(guessedNumber) {
         DOM.showClass('errorInformation')
         DOM.changeDomByClass('attemptsCount', this.#attempts)
         DOM.changeDomByClass('attemptsLeft', this.#attempts)
         DOM.changeDomByClass('secretNumber', guessedNumber)
-        if (this.#secretNumber > guessedNumber) {
-            DOM.changeDomByClass('numberStatus', 'greater')
-        } else {
-            DOM.changeDomByClass('numberStatus', 'less')
-        }
+    }
+    #userWrongAttempt(guessedNumber) {
+        this.#attempts--
+        this.#mutateDomWrongAttempt(guessedNumber)
+        this.#removeInputValue()
+        this.#rememberWrongAttempts(guessedNumber)
+        this.#secretNumber > guessedNumber ? DOM.changeDomByClass('numberStatus', 'greater') : DOM.changeDomByClass('numberStatus', 'less')
     }
     guess() {
         const guessedNumber = Number(DOM.getValueFromInputById('guessedNumber'))
-        if (guessedNumber > 0 && guessedNumber < 20) {
-            this.#guessPrivate(guessedNumber)
-        }
+        if (guessedNumber > 0 && guessedNumber < 20) this.#guessPrivate(guessedNumber)
     }
     #guessPrivate(guessedNumber) {
         if (guessedNumber === this.#secretNumber) {
