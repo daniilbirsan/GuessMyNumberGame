@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,42 +8,61 @@
     <link rel="stylesheet" href="style.css">
     <title>Guess my number Game</title>
 </head>
+
 <body>
+    <nav class="navBar">
+        <p class="triedNumbers upperFontStyle">Tried Numbers: <span class="attemptsRemember"></span></p>
+        <button class="resetBtn" onclick="game.onToNextLevel()">Restart</button>
+    </nav>
     <main class="center center-block">
         <div class="centerButton">
             <button class="playButton center-block" onclick="game.start()">PLAY</button>
         </div>
 
         <section class="game">
-            <h4 class="triedNumbers">Tried Numbers: <span class="attemptsRemember"></span></h4>
-            <h4 class="attempts">Attempts remaining: <span class="attemptsCount"></span></h4>
+            <p class="attempts upperFontStyle">Attempts: <span class="attemptsCount"></span></p>
             <div class="game-content">
-                <h3 class="text-center">Choose a number between 0 and 20</h3>
+                <h3 class="text-center">Choose a number between 0 and <span class="maxNumber" id="maxNumber">20</span>
+                </h3>
                 <div class="input-center">
-                    <input type="number" onkeyup="DOM.disableButtonOnCondition()" placeholder="Enter your number here..." id="guessedNumber">
+                    <input type="number" onkeyup="DOM.disableButtonOnCondition('guessedNumber', 'guessButton')"
+                        placeholder="Enter your number here..." id="guessedNumber">
                 </div>
                 <div class="centerButton">
-                    <button class="guessButton" disabled onclick="game.guess()">Guess</button>
+                    <button class="guessButton btnStyle" disabled onclick="game.guess()">Guess</button>
                 </div>
-                <p class="errorInformation text-center">The number is <span class="numberStatus"></span> than <span class="secretNumber"></span>, you have <span class="attemptsLeft"></span> more attempt/s</p>
+                <p class="errorInformation text-center">The number is <span class="numberStatus"></span> than <span
+                        class="secretNumber"></span>, you have <span class="attemptsLeft"></span> more attempt/s</p>
             </div>
         </section>
 
         <section class="success response">
             <h1 class="text-center">You won, the number was <span class="secretNumberSuccess"></span></h1>
             <div class="centerButton">
-                <button class="buttonReset" onclick="game.start()">Reset</button>
+                <button class="buttonReset" onclick="game.onToNextLevel()">Next Level</button>
             </div>
         </section>
 
         <section class="error response">
             <h1 class="text-center">You lost. The number was <span class="secretNumberError"></span></h1>
             <div class="centerButton">
-                <button class="buttonReset" onclick="game.start()">Reset</button>
+                <button class="buttonReset" onclick="game.start()">Start Again</button>
+            </div>
+        </section>
+
+        <section class="nextLevel">
+            <h1 class="text-center">Choose a number between 14 and 200</h1>
+            <div class="input-center">
+                <input type="number" onkeyup="DOM.disableButtonOnCondition('numberBetween', 'gameStart', 14, 200)"
+                    placeholder="Enter your number here..." id="numberBetween">
+            </div>
+            <div class="centerButton">
+                <button class="gameStart btnStyle" onclick="game.nextLevelStart()" disabled>Game Start</button>
             </div>
         </section>
     </main>
 
     <script src="script.js"></script>
 </body>
+
 </html>

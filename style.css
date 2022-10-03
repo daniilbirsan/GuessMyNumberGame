@@ -62,7 +62,7 @@ input {
 .attempts {
     text-align: right;
 }
-.guessButton {
+.btnStyle {
     font-size: 20px;
     margin: 60px auto 0 auto;
 }
@@ -74,8 +74,6 @@ button:disabled {
 }
 .errorInformation {
     margin-top: 15px;
-}
-.errorInformation {
     font-size: 13px;
 }
 .buttonReset {
@@ -84,4 +82,17 @@ button:disabled {
 }
 .triedNumbers{
     float: left;
+}
+.nextLevel{
+    margin-top: 100px;
+}
+.upperFontStyle{
+    font-size: 13px;
+}
+nav{
+    padding: 10px;
+}
+.resetBtn{
+    float: right;
+    background-color: #7A32FB;
 }
