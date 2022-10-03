@@ -66,7 +66,7 @@ class Game {
         }
     }
     guess() {
-        let guessedNumber = Number(DOM.getValueFromInputById('guessedNumber'))
+        const guessedNumber = Number(DOM.getValueFromInputById('guessedNumber'))
         if (guessedNumber > 0 && guessedNumber < 20) {
             this.#guessPrivate(guessedNumber)
         }
