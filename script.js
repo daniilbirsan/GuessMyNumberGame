@@ -14,15 +14,27 @@ class DOM {
     static disableButtonOnCondition(inputId, btnClass, minValue, maxValue) {
         const inputValue = DOM.getValueFromInputById(inputId)
         const button = document.querySelector(`.${btnClass}`)
-        if(maxValue){
+        if (maxValue) {
             inputValue > minValue && inputValue < maxValue ? button.disabled = false : button.disabled = true
-        }else{
-            inputValue > 0 && inputValue < Number(document.getElementById('maxNumber').innerText) ? button.disabled = false : button.disabled = true
+        } else {
+            inputValue > 0 && inputValue < Number(DOM.getElementById('maxNumber').innerText) ? button.disabled = false : button.disabled = true
         }
     }
     static switchClasses(hideClass, showClass) {
         this.hideClass(hideClass)
         this.showClass(showClass)
+    }
+    static manageIdDom(id, value) {
+        document.getElementById(id).value = value
+    }
+    static manageClickEvent(event, btnName) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById(btnName).click();
+        }
+    }
+    static getElementById(id){
+        return document.getElementById(id)
     }
 }
 
@@ -34,7 +46,6 @@ class Game {
 
     #randomNumber(firstNumber, lastNumber) {
         this.#secretNumber = Math.floor(Math.random() * lastNumber) + firstNumber;
-        console.log(this.#secretNumber)
     }
     startTheGameSetUp() {
         DOM.showClass('navBar');
@@ -42,7 +53,7 @@ class Game {
         this.#attempts = 5
         this.#wrongAttempts = []
         this.#randomNumber(1, 19)
-        document.getElementById("guessedNumber").value = "";
+        DOM.manageIdDom("guessedNumber", "")
         DOM.hideClass('triedNumbers')
         DOM.changeDomByClass('maxNumber', 20)
         DOM.changeDomByClass('attemptsCount', this.#attempts)
@@ -52,13 +63,13 @@ class Game {
         DOM.switchClasses('centerButton', 'game')
         this.startTheGameSetUp()
     }
-    onToNextLevel(){
+    onToNextLevel() {
         ['success', 'error', 'errorInformation', 'game', 'centerButton', 'triedNumbers'].forEach(item => DOM.hideClass(item))
         DOM.showClass('nextLevel')
     }
-    nextLevelStart(){
+    nextLevelStart() {
         const inputValue = DOM.getValueFromInputById('numberBetween')
-        if(inputValue){
+        if (inputValue > 14 && inputValue < 200) {
             DOM.switchClasses('nextLevel', 'game')
             DOM.hideClass('errorInformation')
             DOM.hideClass('triedNumbers')
@@ -67,6 +78,7 @@ class Game {
             this.#wrongAttempts = []
             this.#randomNumber(1, Number(inputValue) - 1)
             this.#removeInputValue()
+            DOM.disableButtonOnCondition('numberBetween', 'gameStart')
             DOM.changeDomByClass('attemptsCount', this.#attempts)
             DOM.changeDomByClass('maxNumber', this.#maxNumber)
         }
@@ -80,8 +92,8 @@ class Game {
         DOM.changeDomByClass('secretNumberError', this.#secretNumber)
     }
     #removeInputValue() {
-        document.getElementById('guessedNumber').value = ''
-        document.getElementById('numberBetween').value = ''
+        DOM.manageIdDom('guessedNumber', '')
+        DOM.manageIdDom('numberBetween', '')
         DOM.disableButtonOnCondition('guessedNumber', 'guessButton', 0, this.#maxNumber)
     }
     #rememberWrongAttempts(guessedNumber) {
@@ -104,7 +116,7 @@ class Game {
     }
     guess() {
         const guessedNumber = Number(DOM.getValueFromInputById('guessedNumber'))
-        if (guessedNumber > 0 && guessedNumber < Number(document.getElementById('maxNumber').innerHTML)) this.#guessPrivate(guessedNumber)
+        if (guessedNumber > 0 && guessedNumber < Number(DOM.getElementById('maxNumber').innerHTML)) this.#guessPrivate(guessedNumber)
     }
     #guessPrivate(guessedNumber) {
         if (guessedNumber === this.#secretNumber) {
@@ -123,3 +135,13 @@ DOM.hideClass('navBar')
 
 const game = new Game()
 game.startTheGameSetUp()
+
+const firstInput = DOM.getElementById("guessedNumber");
+const secondInput = DOM.getElementById("numberBetween");
+
+firstInput.addEventListener("keypress", function (event) {
+    DOM.manageClickEvent(event, "guessButton")
+});
+secondInput.addEventListener("keypress", function (event) {
+    DOM.manageClickEvent(event, "gameStart")
+});

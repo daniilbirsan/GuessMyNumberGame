@@ -29,7 +29,7 @@
                         placeholder="Enter your number here..." id="guessedNumber">
                 </div>
                 <div class="centerButton">
-                    <button class="guessButton btnStyle" disabled onclick="game.guess()">Guess</button>
+                    <button class="guessButton btnStyle" id="guessButton" disabled onclick="game.guess()">Guess</button>
                 </div>
                 <p class="errorInformation text-center">The number is <span class="numberStatus"></span> than <span
                         class="secretNumber"></span>, you have <span class="attemptsLeft"></span> more attempt/s</p>
@@ -57,7 +57,7 @@
                     placeholder="Enter your number here..." id="numberBetween">
             </div>
             <div class="centerButton">
-                <button class="gameStart btnStyle" onclick="game.nextLevelStart()" disabled>Game Start</button>
+                <button class="gameStart btnStyle" id="gameStart" onclick="game.nextLevelStart()" disabled>Game Start</button>
             </div>
         </section>
     </main>
