@@ -83,13 +83,17 @@ class Game {
             DOM.changeDomByClass('maxNumber', this.#maxNumber)
         }
     }
-    #userSuccess() {
+    #userSuccess(guessedNumber) {
         DOM.switchClasses('game', 'success')
         DOM.changeDomByClass('secretNumberSuccess', this.#secretNumber)
+        this.#attempts--
+        this.#rememberWrongAttempts(guessedNumber)
     }
-    #userError() {
+    #userError(guessedNumber) {
         DOM.switchClasses('game', 'error')
         DOM.changeDomByClass('secretNumberError', this.#secretNumber)
+        this.#attempts--
+        this.#rememberWrongAttempts(guessedNumber)
     }
     #removeInputValue() {
         DOM.manageIdDom('guessedNumber', '')
@@ -120,12 +124,12 @@ class Game {
     }
     #guessPrivate(guessedNumber) {
         if (guessedNumber === this.#secretNumber) {
-            this.#userSuccess()
+            this.#userSuccess(guessedNumber)
         } else {
             if (this.#attempts > 1) {
                 this.#userWrongAttempt(guessedNumber)
             } else {
-                this.#userError()
+                this.#userError(guessedNumber)
             }
         }
     }
